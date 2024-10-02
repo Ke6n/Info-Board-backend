@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Result<T> {
-    private Integer code;// 0-success  1-fail
+    private Integer code;// 0-succeed  1-failed
     private String message;
     private T data;
 
