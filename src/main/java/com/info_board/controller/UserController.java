@@ -3,6 +3,7 @@ package com.info_board.controller;
 import com.info_board.pojo.Result;
 import com.info_board.pojo.User;
 import com.info_board.service.UserService;
+import com.info_board.utils.JwtUtil;
 import com.info_board.utils.Md5Util;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -37,7 +41,12 @@ public class UserController {
         User loginUser = userService.findByUserName(username);
         // password verify
         if(loginUser != null && Md5Util.getMD5String(password).equals(loginUser.getPassword())){
-            return Result.success();
+            // JWT-token generate
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("id", loginUser.getId());
+            claims.put("username", loginUser.getUsername());
+            String token = JwtUtil.genToken(claims);
+            return Result.success(token);
         }
         // Username or password is wrong
         return Result.error("Please enter the correct username or password!");
