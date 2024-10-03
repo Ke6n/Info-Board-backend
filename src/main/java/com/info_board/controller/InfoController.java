@@ -11,13 +11,7 @@ import java.util.Map;
 @RequestMapping("/infos")
 public class InfoController {
     @GetMapping("/list")
-    public Result<String> list(@RequestHeader(name = "Authorization") String token, HttpServletResponse response){
-        try {
-            Map<String, Object> claims = JwtUtil.parseToken(token);
-            return Result.success("Infos loaded");
-        } catch (Exception e) {
-            response.setStatus(401);
-            return Result.error("Not logged in");
-        }
+    public Result<String> list(){
+        return Result.success("Infos loaded");
     }
 }
