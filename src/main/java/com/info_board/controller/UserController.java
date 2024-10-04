@@ -7,7 +7,9 @@ import com.info_board.utils.JwtUtil;
 import com.info_board.utils.Md5Util;
 import com.info_board.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,5 +59,48 @@ public class UserController {
         String username = (String) map.get("username");
         User user = userService.findByUserName(username);
         return Result.success(user);
+    }
+
+    @PutMapping("/update")
+    public Result<User> update(@RequestBody @Validated User user){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        if (user.getId().equals(id)) {
+            userService.update(user);
+            return Result.success();
+        } else {
+            return  Result.error("Illegal operation: User ID has been tampered with!");
+        }
+    }
+
+    @PatchMapping("/updateAvatar")
+    public Result<String> updateAvatar(@RequestParam @URL String avatarUrl){
+        userService.updateAvatar(avatarUrl);
+        return Result.success();
+    }
+
+    @PatchMapping("/updatePwd")
+    public Result<String> updatePwd(@RequestBody Map<String, String> params){
+        // Parameter Validation
+        String oldPwd = params.get("old_pwd");
+        String newPwd = params.get("new_pwd");
+        String rePwd = params.get("re_pwd");
+
+        if(!StringUtils.hasLength(oldPwd) || !StringUtils.hasLength(newPwd) || !StringUtils.hasLength(rePwd)){
+            return Result.error("Missing required parameters!");
+        }
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String username = (String) map.get("username");
+        User user = userService.findByUserName(username);
+        if(!rePwd.equals(newPwd)){
+            return Result.error("The new passwords filled in twice are inconsistent!");
+        }
+        if(!user.getPassword().equals(Md5Util.getMD5String(oldPwd))){
+            return Result.error("Please enter the correct original password!");
+        }
+        // Update password
+        userService.updatePwd(newPwd);
+        return Result.success();
     }
 }
