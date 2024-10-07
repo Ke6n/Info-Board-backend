@@ -1,7 +1,6 @@
 package com.info_board.pojo;
 
-
-//import com.info_board.anno.State;
+import com.info_board.anno.State;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -17,7 +16,7 @@ public class Article {
     private Integer id;//ID(PK)
 
     @NotEmpty
-    @Pattern(regexp = "^\\S{1,10}$")
+    @Pattern(regexp = "^.{1,50}$")
     private String title;
 
     @NotEmpty
@@ -26,7 +25,7 @@ public class Article {
     @URL
     private String coverImg;
 
-//    @State
+    @State
     private String state;//Draft|Published
 
     @NotNull
