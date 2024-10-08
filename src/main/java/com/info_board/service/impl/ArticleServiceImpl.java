@@ -40,4 +40,20 @@ public class ArticleServiceImpl implements ArticleService {
         pageBean.setItems(page.getResult());
         return pageBean;
     }
+
+    @Override
+    public void update(Article article) {
+        article.setUpdateTime(LocalDateTime.now());
+        articleMapper.update(article);
+    }
+
+    @Override
+    public Article findById(Integer id) {
+        return articleMapper.findById(id);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        articleMapper.delete(id);
+    }
 }

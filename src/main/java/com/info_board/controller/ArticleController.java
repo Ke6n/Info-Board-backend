@@ -28,4 +28,22 @@ public class ArticleController {
         PageBean<Article> articleList = articleService.list(pageNum, pageSize, categoryId, state);
         return Result.success(articleList);
     }
+
+    @PutMapping
+    public Result<String> update(@RequestBody @Validated(Article.Update.class) Article article){
+        articleService.update(article);
+        return  Result.success();
+    }
+
+    @GetMapping("/detail")
+    public Result<Article> detail(Integer id){
+        Article a = articleService.findById(id);
+        return Result.success(a);
+    }
+
+    @DeleteMapping
+    public Result<String> delete(Integer id){
+        articleService.delete(id);
+        return Result.success();
+    }
 }

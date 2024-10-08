@@ -1,5 +1,6 @@
 package com.info_board.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.info_board.anno.State;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +32,9 @@ public class Article {
     @NotNull
     private Integer categoryId;
     private Integer createUser;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     public interface Add extends Default {
