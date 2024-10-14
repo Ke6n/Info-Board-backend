@@ -4,3 +4,4 @@
 /src/test/java/com/info_board/AwsUploadTest.java
 /target/test-classes/com/info_board/AwsUploadTest.class
 /avatar/user.png
+/src/test/java/com/info_board/RedisTest.java
